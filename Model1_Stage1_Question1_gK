@@ -21,6 +21,6 @@ r = g_Na/g_K;
 disp(r)
 
 % Plotting g_K
-g_Na(1:101) = g_K; 
+g_K(1:101) = g_K; 
 plot (t, g_K)
 xlabel = ('Time (mSec)'); ylabel = ('Conductance (S/Cm^2)'); 
