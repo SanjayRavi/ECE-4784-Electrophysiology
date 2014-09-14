@@ -1,14 +1,14 @@
-ECE-4784-Electrophysiology
-==========================
+%ECE-4784-Electrophysiology
+%==========================
 %Model Stage 1 Question 1 plotting membrane voltage in steady state. 
 
-Sanjay Ravi
-Georgia Tech ECE 4784
+%Sanjay Ravi
+%Georgia Tech ECE 4784
 % simulation parameters
-t = 0:10:100; %ms
+t = 0:100; % Time in ms
 
 % constants
-g_K = 36;
+g_K = 36; % g's in mS/cm^2
 g_Na = 120;
 g_L = 0.3;
 E_K = -12;
@@ -23,4 +23,4 @@ disp(r)
 % Plotting Membrane Voltage
 V_m(1:101) = V_rest; 
 plot (t, V_m)
-xlabel = ('Time (mSec)'); ylabel = ('Membrane Voltage (mV)')
+xlabel = ('Time (mSec)'); ylabel = ('Membrane Voltage (mV)');
