@@ -6,16 +6,27 @@
 t = 0:100; %ms
 
 % constants
-g_K = 36;
+g_K = 36; % mS/cm^2
 g_Na = 120;
 g_L = 0.3;
-E_K = -12;
+E_K = -12; %mV
 E_Na = 115;
 E_L = 10.6;
-V_rest = -70;
-
+V_m = -70;
+C_m = 1; %uF
+m = 0;
+n = 0;
+h = 0;
+I = 0;
+Vm(1:10) = New_delta_V_m ;
 %Equations:
 %Gating variables:
+
+for (t = 0:100)
+{
+for i = 1:1:10
+Step = 10 %ms
+
 Alpha_m = 0.1 * ((25-V_m)/(exp((25-V_m)/10) - 1));
 Beta_m = 4* exp(-V_m/18);
 Alpha_n = .01 * ((10-V_m)/(exp((10-V_m)/10) - 1));
@@ -23,20 +34,20 @@ Beta_n = .125 * exp(-V_m/80);
 Alpha_h = .07 * exp(-V_m/20);
 Beta_h = 1/(exp((30-V_m)/10) + 1);
 
-%Currents
+delta_m = Alpha_m *(1-m)-Beta_m * m;
+delta_n = Alpha_n * (1-n)-Beta_n * n;
+delta_h = Alpha_h * (1-h)-Beta_h* h;
+
 I_Na = m^3 * g_Na * h * (V_m-E_Na);
 I_K = n^4 * g_K * (V_m-E_K);
 I_L = g_L * (V_m-E_L);
 I_ion = I-I_K-I_Na-I_L;
 
-%Derivatives
+DeltaV_m = I_ion/C_m;
 
-dV_m/dt = I_ion/C_m; ????????????????????????????????????
-%dm/dt = Alpha_m *(1-m)-Beta_m * m;
-constant_m;
-%dn/dt = Aplha_n * (1-n)-Beta_n * n;
-constant_n;
-%dh/dt = Alpha_h * (1-h)-Beta_h* h;
-constant_h;
-%Euler’s method
-y(n+1) = y(n) + h * f(t(n),y(n));
+
+New_delta_V_m(i+1) = V_m(i) + step * DeltaV_m;
+
+
+}
+end
