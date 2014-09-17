@@ -19,35 +19,51 @@ n = 0;
 h = 0;
 I = 0;
 Vm(1:10) = New_delta_V_m ;
+Step = 10;
 %Equations:
 %Gating variables:
+% Basically Im trying to make it as array because it is shooting me memory
+% error
 
-for (t = 0:100)
+Alpha_m = zeros([1,10]);
+Beta_m = zeros([1,10]);
+Alpha_n = zeros([1,10]);
+Beta_n = zeros([1,10]);
+Alpha_h = zeros([1,10]);
+Beta_h = zeros([1,10]);
+
+delta_m = zeros([1,10]);
+delta_n = zeros([1,10]);
+delta_h = zeros([1,10]);
+
+I_Na = zeros([1,10]);
+I_K = zeros([1,10]);
+I_L = zeros([1,10]);
+I_ion = zeros([1,10]);
+
+for t = 0:100
+  i = 1:10;  
 {
-for i = 1:1:10
-Step = 10 %ms
 
-Alpha_m = 0.1 * ((25-V_m)/(exp((25-V_m)/10) - 1));
-Beta_m = 4* exp(-V_m/18);
-Alpha_n = .01 * ((10-V_m)/(exp((10-V_m)/10) - 1));
-Beta_n = .125 * exp(-V_m/80);
-Alpha_h = .07 * exp(-V_m/20);
-Beta_h = 1/(exp((30-V_m)/10) + 1);
+Alpha_m(i) = 0.1 * ((25-V_m)/(exp((25-V_m)/10) - 1));
+Beta_m(i) = 4* exp(-V_m/18);
+Alpha_n(i) = .01 * ((10-V_m)/(exp((10-V_m)/10) - 1));
+Beta_n(i) = .125 * exp(-V_m/80);
+Alpha_h(i) = .07 * exp(-V_m/20);
+Beta_h(i) = 1/(exp((30-V_m)/10) + 1);
 
-delta_m = Alpha_m *(1-m)-Beta_m * m;
-delta_n = Alpha_n * (1-n)-Beta_n * n;
-delta_h = Alpha_h * (1-h)-Beta_h* h;
+delta_m(i) = Alpha_m *(1-m)-Beta_m * m;
+delta_n(i) = Alpha_n * (1-n)-Beta_n * n;
+delta_h(i) = Alpha_h * (1-h)-Beta_h* h;
 
-I_Na = m^3 * g_Na * h * (V_m-E_Na);
-I_K = n^4 * g_K * (V_m-E_K);
-I_L = g_L * (V_m-E_L);
-I_ion = I-I_K-I_Na-I_L;
+I_Na(i) = m^3 * g_Na * h * (V_m-E_Na);
+I_K(i) = n^4 * g_K * (V_m-E_K);
+I_L(i) = g_L * (V_m-E_L);
+I_ion(i) = I-I_K-I_Na-I_L;
 
-DeltaV_m = I_ion/C_m;
+DeltaV_m = I_ion(i)/C_m;
 
 
-New_delta_V_m(i+1) = V_m(i) + step * DeltaV_m;
-
-
+V_m(i+1) = V_m(i) + step * DeltaV_m;
 }
 end
