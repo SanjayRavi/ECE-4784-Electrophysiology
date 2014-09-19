@@ -3,7 +3,8 @@
 %Sanjay Ravi
 %Georgia Tech ECE 4784
 % simulation parameters
-t = 0:100; %ms
+T_final = 100;
+t = 0:T_final; %ms
 
 % constants
 g_K = 36; % mS/cm^2
@@ -12,34 +13,46 @@ g_L = 0.3;
 E_K = -12; %mV
 E_Na = 115;
 E_L = 10.6;
+V_rest = -70;
 V_m = -70;
 C_m = 1; %uF
-m = 0;
-n = 0;
-h = 0;
+
+Vm(1:t/Step) = New_delta_V_m ;
+
+Alpha_m = zeros([1,t/Step]);
+Beta_m = zeros([1,t/Step]);
+Alpha_n = zeros([1,t/Step]);
+Beta_n = zeros([1,t/Step]);
+Alpha_h = zeros([1,t/Step]);
+Beta_h = zeros([1,t/Step]);
+
+delta_m = zeros([1,t/Step]);
+delta_n = zeros([1,t/Step]);
+delta_h = zeros([1,t/Step]);
+
 I = 0;
-Vm(1:10) = New_delta_V_m ;
-Step = 10;
-%Equations:
-%Gating variables:
+I_Na = zeros([1,t/Step]);
+I_K = zeros([1,t/Step]);
+I_L = zeros([1,t/Step]);
+I_ion = zeros([1,t/Step]);
+
+m = zeros([1,t/Step]);
+n = zeros([1,t/Step]);
+h = zeros([1,t/Step]);
+
+% Initial Values
+V_m(1) = -70;
+Alpha_m(1) = 0.1 * ((25-V_m(i))/(exp((25-V_m(i))/10) - 1));
+m(1) = Alpha_m /(Alpha_m + Beta_m);
+n(1) = Alpha_n /(Alpha_n + Beta_n);
+h(1) = Alpha_h /(Alpha_h + Beta_h);
+
+Step = 10; %I have to pick a right value for this :(
+
 % Basically Im trying to make it as array because it is shooting me memory
 % error
 
-Alpha_m = zeros([1,10]);
-Beta_m = zeros([1,10]);
-Alpha_n = zeros([1,10]);
-Beta_n = zeros([1,10]);
-Alpha_h = zeros([1,10]);
-Beta_h = zeros([1,10]);
 
-delta_m = zeros([1,10]);
-delta_n = zeros([1,10]);
-delta_h = zeros([1,10]);
-
-I_Na = zeros([1,10]);
-I_K = zeros([1,10]);
-I_L = zeros([1,10]);
-I_ion = zeros([1,10]);
 
 for t = 0:t/step
   i = 1:10;  
