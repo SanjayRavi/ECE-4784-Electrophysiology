@@ -14,32 +14,32 @@ E_K = -12; %mV
 E_Na = 115;
 E_L = 10.6;
 V_rest = -70;
-V_m = -70;
+%V_m = -70;
 C_m = 1; %uF
 
 Step = 10; %I have to pick a right value for this :(
-Vm(1:t/Step) = New_delta_V_m ;
+V_m = zeros([1,T_final/Step]);
 
-Alpha_m = zeros([1,t/Step]);
-Beta_m = zeros([1,t/Step]);
-Alpha_n = zeros([1,t/Step]);
-Beta_n = zeros([1,t/Step]);
-Alpha_h = zeros([1,t/Step]);
-Beta_h = zeros([1,t/Step]);
+Alpha_m = zeros([1,T_final/Step]);
+Beta_m = zeros([1,T_final/Step]);
+Alpha_n = zeros([1,T_final/Step]);
+Beta_n = zeros([1,T_final/Step]);
+Alpha_h = zeros([1,T_final/Step]);
+Beta_h = zeros([1,T_final/Step]);
 
-delta_m = zeros([1,t/Step]);
-delta_n = zeros([1,t/Step]);
-delta_h = zeros([1,t/Step]);
+delta_m = zeros([1,T_final/Step]);
+delta_n = zeros([1,T_final/Step]);
+delta_h = zeros([1,T_final/Step]);
 
 I = 0;
-I_Na = zeros([1,t/Step]);
-I_K = zeros([1,t/Step]);
-I_L = zeros([1,t/Step]);
-I_ion = zeros([1,t/Step]);
+I_Na = zeros([1,T_final/Step]);
+I_K = zeros([1,T_final/Step]);
+I_L = zeros([1,T_final/Step]);
+I_ion = zeros([1,T_final/Step]);
 
-m = zeros([1,t/Step]);
-n = zeros([1,t/Step]);
-h = zeros([1,t/Step]);
+m = zeros([1,T_final/Step]);
+n = zeros([1,T_final/Step]);
+h = zeros([1,T_final/Step]);
 
 % Initial Values
 V_m(1) = -70;
