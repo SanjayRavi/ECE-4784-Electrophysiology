@@ -12,14 +12,17 @@ g_L = 0.3;
 E_K = -12; %mV
 E_Na = 115;
 E_L = 10.6;
-V_m = -70; 
+V_m = -70;
 C_m = 1; %uF
-
-Vm(1:10) = New_delta_V_m ; % creating a vector so that I have enough space to store the values of V_m after each iteration. 
+m = 0;
+n = 0;
+h = 0;
+I = 0;
+Vm(1:10) = New_delta_V_m ;
 Step = 10;
 %Equations:
 %Gating variables:
-% Basically I'm trying to make it as array because it is shooting me memory
+% Basically Im trying to make it as array because it is shooting me memory
 % error
 
 Alpha_m = zeros([1,10]);
@@ -38,29 +41,28 @@ I_K = zeros([1,10]);
 I_L = zeros([1,10]);
 I_ion = zeros([1,10]);
 
-for t = 0:100
+for t = 0:t/step
   i = 1:10;  
-{
 
-Alpha_m(i) = 0.1 * ((25-V_m)/(exp((25-V_m)/10) - 1));
-Beta_m(i) = 4* exp(-V_m/18);
-Alpha_n(i) = .01 * ((10-V_m)/(exp((10-V_m)/10) - 1));
-Beta_n(i) = .125 * exp(-V_m/80);
-Alpha_h(i) = .07 * exp(-V_m/20);
-Beta_h(i) = 1/(exp((30-V_m)/10) + 1);
+Alpha_m(i) = 0.1 * ((25-V_m(i))/(exp((25-V_m(i))/10) - 1));
+Beta_m(i) = 4* exp(-V_m(i)/18);
+Alpha_n(i) = .01 * ((10-V_m(i))/(exp((10-V_m(i))/10) - 1));
+Beta_n(i) = .125 * exp(-V_m(i)/80);
+Alpha_h(i) = .07 * exp(-V_m(i)/20);
+Beta_h(i) = 1/(exp((30-V_m(i))/10) + 1);
 
 delta_m(i) = Alpha_m *(1-m)-Beta_m * m;
 delta_n(i) = Alpha_n * (1-n)-Beta_n * n;
 delta_h(i) = Alpha_h * (1-h)-Beta_h* h;
 
-I_Na(i) = m^3 * g_Na * h * (V_m-E_Na);
-I_K(i) = n^4 * g_K * (V_m-E_K);
-I_L(i) = g_L * (V_m-E_L);
+I_Na(i) = m^3 * g_Na * h * (V_m(i)-E_Na);
+I_K(i) = n^4 * g_K * (V_m(i)-E_K);
+I_L(i) = g_L * (V_m(i)-E_L);
 I_ion(i) = I-I_K-I_Na-I_L;
 
 DeltaV_m = I_ion(i)/C_m;
 
 
 V_m(i+1) = V_m(i) + step * DeltaV_m;
-}
+
 end
