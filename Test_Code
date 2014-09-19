@@ -14,15 +14,12 @@ E_Na = 115;
 E_L = 10.6;
 V_m = -70; 
 C_m = 1; %uF
-m = 0;
-n = 0;
-h = 0;
-I = 0;
+
 Vm(1:10) = New_delta_V_m ; % creating a vector so that I have enough space to store the values of V_m after each iteration. 
 Step = 10;
 %Equations:
 %Gating variables:
-% Basically Im trying to make it as array because it is shooting me memory
+% Basically I'm trying to make it as array because it is shooting me memory
 % error
 
 Alpha_m = zeros([1,10]);
