@@ -5,18 +5,19 @@
     % simulation parameters
     height = 0.05; %I have to pick a right value for this :(
     T_final = 100;
-    i = 0:(1/height):T_final; %ms
+ %   t = 0:(1/height):T_final; %ms
+ t= 0:(height):T_final;
 
     % constants
-    g_K = 36; % mS/cm^2
+    g_K = 36 ; % mS/cm^2
     g_Na = 120;
-    g_L = 0.3;
-    E_K = -12; %mV
-    E_Na = 115;
-    E_L = 10.6;
+    g_L = 0.3 ;
+    E_K = -12 ; %mV
+    E_Na = 115 ;
+    E_L = 10.6 ;
     V_rest = -70;
     %V_m = -70;
-    C_m = 1; %uF
+    C_m = 1*10^-3; %uF
 
     V_m = zeros([1,T_final/height]);
 
@@ -103,3 +104,4 @@
     end
     plot(t,V_m)
     xlabel = ('Time (mSec)'); ylabel = ('Membrane Voltage (mV)');
+   % axis([1 10 -80 0])
