@@ -1,0 +1,85 @@
+    %ECE-4784-Electrophysiology
+    %==========================
+    %Sanjay Ravi
+    %Georgia Tech ECE 4784
+    %Steady State Analysis 
+
+clear all
+close all
+% total Simulation Time = 100ms
+t_final = 100; 
+
+Step_height = 1/t_final; %Crutical to pick a good step height
+
+t = 0:Step_height:t_final;  
+
+% Gating constants from the document 
+
+gK_Max = 36;
+gNa_Max = 120;
+g_L = .3;
+E_K = -12;
+E_Na = 115;
+E_L = 10.6;
+V_rest = -70;
+C_m = 1;
+
+%Seems like we have change the value of injection current in the upcoming questions, So it would be a good idea to create the injection current as an vector and store values in it.
+I(1:length(t)) = 5;  % steady current supply for 100ms
+
+% Initial/first value calculations for the parameters alphas, betas, m, n and h
+V_m = 0; 
+alpha_m = .1*( (25-V_m) / (exp((25-V_m)/10)-1)); 
+beta_m = 4*exp(-V_m/18);
+alpha_n = .01 * ( (10-V_m) / (exp((10-V_m)/10)-1));
+beta_n = .125*exp(-V_m/80); 
+alpha_h = .07*exp(-V_m/20); 
+beta_h = 1/(exp((30-V_m)/10)+1); 
+
+m = alpha_m/(alpha_m+beta_m); 
+n = alpha_n/(alpha_n+beta_n); 
+h = alpha_h/(alpha_h+beta_h); 
+
+% We have to use a for loop because we want to use eulers method. This will basically update our Vm for each i's. 
+for i=1:length(t)-1
+    % we are calculation the alphas, betas, m, n and h for each i
+    alpha_m(i) = .1*( (25-V_m(i)) / (exp((25-V_m(i))/10)-1) );
+    beta_m(i) = 4*exp(-V_m(i)/18);
+    alpha_n(i) = .01 * ( (10-V_m(i)) / (exp((10-V_m(i))/10)-1) );
+    beta_n(i) = .125*exp(-V_m(i)/80);
+    alpha_h(i) = .07*exp(-V_m(i)/20);
+    beta_h(i) = 1/(exp((30-V_m(i))/10)+1);
+    
+    m(i+1) = m(i) + Step_height*(alpha_m(i) *(1-m(i)) - beta_m(i) * m(i));
+    n(i+1) = n(i) + Step_height*(alpha_n(i) *(1-n(i)) - beta_n(i) * n(i)); 
+    h(i+1) = h(i) + Step_height*(alpha_h(i) *(1-h(i)) - beta_h(i) * h(i));
+    
+    %Currents calculations for each i
+    I_Na = (m(i)^3) * gNa_Max * h(i) * (V_m(i)-E_Na); 
+    I_K = (n(i)^4) * gK_Max * (V_m(i)-E_K); 
+    I_L = g_L *(V_m(i)-E_L); 
+    I_ion = I(i) - I_K - I_Na - I_L; 
+    
+    %Updated membrane voltage using Eulers method. 
+    V_m(i+1) = V_m(i) + Step_height * I_ion/C_m;
+    
+end
+
+V_m = V_m + V_rest;
+
+%ploting Vm vs t We should expect a straight line 
+figure(1)
+Vm = plot(t,V_m);
+ylabel('Voltage (mV)'); xlabel('Time (ms)');
+title('Membrane Potential')
+
+%ploting gK,gNa vs t, again we should expect a straight line
+figure(2)
+gK = gK_Max*n.^4;
+plot(t,gK);
+hold on
+gNa = gNa_Max*(m.^3).*h;
+plot(t,gNa,'g');
+ylabel('Conductance (mS/cm^2)')
+xlabel('Time (ms)')
+title('gK and gNa')
