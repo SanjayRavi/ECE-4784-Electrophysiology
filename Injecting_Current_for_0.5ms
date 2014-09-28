@@ -25,7 +25,7 @@ V_rest = -70;
 C_m = 1;
 
 %Seems like we have change the value of injection current in the upcoming questions, So it would be a good idea to create the injection current as an vector and store values in it.
-I(1:6) = 0; 
+I(1:6) = 0;  %This ensures that the current for the first 0.5 ms = 5 and then I have set it to 0. 
 I(6:length(t))=5;
 
 % Initial/first value calculations for the parameters alphas, betas, m, n and h
