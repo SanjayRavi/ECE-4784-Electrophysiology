@@ -2,7 +2,7 @@
     %==========================
     %Sanjay Ravi
     %Georgia Tech ECE 4784
-    %Steady State Analysis 
+    %Steady Current Analysis 
 
 clear all
 close all
